@@ -1,0 +1,54 @@
+<h2 class="text-xl font-bold mb-3">Kontrol Besok</h2>
+
+<% if @tomorrow_visits.any? %>
+
+<table class="w-full text-sm mb-8">
+  <thead class="border-b">
+    <tr>
+      <th class="text-left py-2">Nama</th>
+      <th class="text-left py-2">HP</th>
+      <th class="text-left py-2">Tanggal</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tomorrow_visits.each do |visit| %>
+      <tr class="border-b">
+        <td class="py-2"><%= visit.patient.name %></td>
+        <td class="py-2"><%= visit.patient.phone %></td>
+        <td class="py-2"><%= visit.next_visit_date %></td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<% else %>
+
+<p class="text-gray-500 mb-8">
+Tidak ada pasien kontrol besok
+</p>
+
+<% end %>
+
+<h2 class="text-xl font-bold mb-3">Semua Kunjungan</h2>
+
+<table class="w-full text-sm">
+<thead class="border-b">
+<tr>
+<th>Nama</th>
+<th>Tanggal Datang</th>
+<th>Kontrol Lagi</th>
+</tr>
+</thead>
+
+<tbody>
+<% @visits.each do |visit| %>
+<tr class="border-b">
+<td><%= visit.patient.name %></td>
+<td><%= visit.visit_date %></td>
+<td><%= visit.next_visit_date %></td>
+</tr>
+<% end %>
+</tbody>
+</table>

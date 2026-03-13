@@ -1,0 +1,149 @@
+<div class="py-10 px-4 sm:px-6 lg:px-8 bg-gray-50 min-h-screen">
+
+<div class="max-w-6xl mx-auto space-y-10">
+
+<!-- PASIEN HARI INI -->
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-xl font-bold text-gray-800">
+      🩺 Pasien Hari Ini
+    </h2>
+
+    <span class="text-sm text-gray-500">
+      <%= Date.today.strftime("%A %d %B %Y") %>
+    </span>
+  </div>
+
+  <% if @today_visits.present? %>
+
+  <div class="overflow-x-auto">
+  <table class="w-full text-sm">
+
+    <thead class="border-b text-gray-500">
+      <tr>
+        <th class="py-3 text-left">Pasien</th>
+        <th class="py-3 text-left">Tanggal</th>
+        <th class="py-3 text-left">Aksi</th>
+      </tr>
+    </thead>
+
+    <tbody class="divide-y">
+
+      <% @today_visits.each do |visit| %>
+
+      <tr class="hover:bg-gray-50 transition">
+
+        <td class="py-3 text-center ">
+          <p class="font-semibold text-gray-800">
+            <%= visit.patient.name %>
+          </p>
+
+          <p class="text-gray-500 text-xs">
+            <%= visit.patient.address %>
+          </p>
+        </td>
+
+        <td class="py-3 text-center text-gray-600">
+          <%= visit.visit_date.strftime("%A %d %b %Y") %>
+        </td>
+
+        <td class="py-3 text-center ">
+          <%= link_to "Detail",
+              patient_path(visit.patient),
+              class:"px-3 py-1.5 bg-blue-100 text-blue-700 rounded-lg text-xs font-semibold hover:bg-blue-200 transition" %>
+        </td>
+
+      </tr>
+
+      <% end %>
+
+    </tbody>
+
+  </table>
+  </div>
+
+  <% else %>
+
+  <div class="text-center py-8 text-gray-500">
+    Tidak ada pasien hari ini.
+  </div>
+
+  <% end %>
+
+</div>
+
+
+<!-- KUNJUNGAN BESOK -->
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-xl font-bold text-gray-800">
+      📅 Jadwal Kunjungan Besok
+    </h2>
+
+    <span class="text-sm text-gray-500">
+      <%= Date.tomorrow.strftime("%A %d %B %Y") %>
+    </span>
+  </div>
+
+  <% if @tomorrow_visits.present? %>
+
+  <div class="overflow-x-auto">
+  <table class="w-full text-sm">
+
+    <thead class="border-b text-gray-500">
+      <tr>
+        <th class="py-3 text-left">Pasien</th>
+        <th class="py-3 text-left">Tanggal</th>
+        <th class="py-3 text-left">Aksi</th>
+      </tr>
+    </thead>
+
+    <tbody class="divide-y">
+
+      <% @tomorrow_visits.each do |visit| %>
+
+      <tr class="hover:bg-gray-50 transition">
+
+        <td class="py-3 text-center">
+          <p class="font-semibold text-gray-800">
+            <%= visit.patient.name %>
+          </p>
+
+          <p class="text-gray-500 text-xs">
+            <%= visit.patient.address %>
+          </p>
+        </td>
+
+        <td class="py-3 text-center text-gray-600">
+          <%= visit.next_visit_date&.strftime("%A %d %b %Y") %>
+        </td>
+
+        <td class="py-3 text-center">
+          <%= link_to "Detail",
+              patient_path(visit.patient),
+              class:"px-3 py-1.5 bg-blue-100 text-blue-700 rounded-lg text-xs font-semibold hover:bg-blue-200 transition" %>
+        </td>
+
+      </tr>
+
+      <% end %>
+
+    </tbody>
+
+  </table>
+  </div>
+
+  <% else %>
+
+  <div class="text-center py-8 text-gray-500">
+    Tidak ada jadwal kunjungan besok.
+  </div>
+
+  <% end %>
+
+</div>
+
+</div>
+</div>

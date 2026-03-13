@@ -1,0 +1,57 @@
+<%= form_with(model: patient, class: "max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-md space-y-6") do |form| %>
+
+  <% if patient.errors.any? %>
+    <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
+      <h2 class="font-semibold mb-2">
+        <%= pluralize(patient.errors.count, "Kesalahan") %> ditemukan:
+      </h2>
+      <ul class="list-disc ml-5 text-sm space-y-1">
+        <% patient.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Nama -->
+  <div>
+    <%= form.label :name, "Nama Pasien", class:"block text-sm font-semibold text-gray-700" %>
+    <%= form.text_field :name,
+      class: "mt-2 w-full rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 px-4 py-3 shadow-sm transition" %>
+  </div>
+
+  <!-- Usia -->
+  <div>
+    <%= form.label :age, "Usia", class:"block text-sm font-semibold text-gray-700" %>
+    <%= form.number_field :age,
+      class: "mt-2 w-full rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 px-4 py-3 shadow-sm transition" %>
+  </div>
+
+  <!-- Alamat -->
+  <div>
+    <%= form.label :address, "Alamat", class:"block text-sm font-semibold text-gray-700" %>
+    <%= form.text_area :address, rows: 3,
+      class: "mt-2 w-full rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 px-4 py-3 shadow-sm transition resize-none" %>
+  </div>
+
+  <!-- No HP -->
+  <div>
+    <%= form.label :phone, "No. HP", class:"block text-sm font-semibold text-gray-700" %>
+    <%= form.text_field :phone,
+      class: "mt-2 w-full rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 px-4 py-3 shadow-sm transition" %>
+  </div>
+
+  <!-- Keluhan -->
+  <div>
+    <%= form.label :keluhan, "Keluhan", class:"block text-sm font-semibold text-gray-700" %>
+    <%= form.textarea :keluhan, rows: 4,
+      class: "mt-2 w-full rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 px-4 py-3 shadow-sm transition resize-none" %>
+  </div>
+
+  <!-- Button -->
+  <div>
+    <%= form.submit patient.persisted? ? "Update Pasien" : "Tambah Pasien",
+      class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-lg transition duration-200" %>
+  </div>
+
+<% end %>

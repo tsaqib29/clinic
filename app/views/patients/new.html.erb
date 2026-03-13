@@ -1,0 +1,29 @@
+<% content_for :title, "Daftar Kunjungan" %>
+
+<section class="py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Header -->
+    <div class="mb-8 text-center">
+      <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">
+        Daftar Kunjungan
+      </h1>
+      <p class="mt-2 text-gray-500 text-sm sm:text-base">
+        Silakan isi data pasien untuk melakukan pendaftaran kunjungan.
+      </p>
+    </div>
+
+    <!-- Card Form -->
+    <div class="bg-white rounded-2xl shadow-md p-6 sm:p-8">
+      <%= render "form", patient: @patient %>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-6 text-center">
+      <%= link_to "← Kembali",
+          patients_path,
+          class: "inline-block text-sm font-medium text-gray-600 hover:text-blue-600 transition" %>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KlinikApp</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+</head>
+
+<body class="bg-gray-100">
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-emerald-600 text-white p-6">
+      <h1 class="text-2xl font-bold mb-10">🏥 KlinikApp</h1>
+
+      <nav class="space-y-4">
+        <%= link_to "Dashboard", admin_root_path, class: "block hover:bg-emerald-500 p-2 rounded-lg" %>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="flex-1 p-10">
+      <%= yield %>
+    </main>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<%= form_with(model: [@patient, @visit], local: true) do |form| %>
+
+<div class="mb-4">
+  <%= form.label :visit_date, "Tanggal Kunjungan", class:"block text-sm font-medium" %>
+  <%= form.date_field :visit_date,
+      class:"mt-1 w-full border rounded-lg px-3 py-2" %>
+</div>
+
+<div class="mb-4">
+  <%= form.label :next_visit_date, "Kunjungan Selanjutnya", class:"block text-sm font-medium" %>
+  <%= form.date_field :next_visit_date,
+      class:"mt-1 w-full border rounded-lg px-3 py-2" %>
+</div>
+
+<div class="mb-4">
+  <%= form.label :cost, "Biaya Pengobatan", class:"block text-sm font-medium" %>
+    <%= form.text_field :cost,
+    id:"cost_input",
+    class:"mt-1 w-full border rounded-lg px-3 py-2" %>
+</div>
+
+<div class="mt-6">
+  <%= form.submit "Simpan",
+      class:"bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg" %>
+</div>
+
+<% end %>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+    const input = document.getElementById("cost_input");
+
+    input.addEventListener("input", function(e) {
+
+        let value = e.target.value.replace(/\D/g, "");
+
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+        e.target.value = value;
+
+    });
+
+    });
+</script>
