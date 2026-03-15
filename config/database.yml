@@ -84,20 +84,6 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
-
-  default: &default
-    adapter: postgresql
-    encoding: unicode
-    max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-
-  development:
-    <<: *default
-    database: sinshe_tommy_development
-
-  test:
-    <<: *default
-    database: sinshe_tommy_test
-
   production:
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
