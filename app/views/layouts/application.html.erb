@@ -6,7 +6,7 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <turbo-frame id="modal"></turbo-frame>
     <%= javascript_importmap_tags %>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   </head>
@@ -18,28 +18,39 @@
 
     <!-- BAR ATAS -->
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-[56px] flex items-center justify-between">
-
       <!-- KIRI: Logo + Hamburger -->
       <div class="flex items-center justify-between w-full font-semibold text-gray-800">
 
-        <!-- Hamburger (Mobile Only) -->
+      <!-- KIRI -->
+      <div class="flex items-center gap-3">
+        <!-- Hamburger (Mobile) -->
         <button id="menuBtn" class="md:hidden text-2xl focus:outline-none">
           ☰
         </button>
 
-        <!-- Logo -->
-        <div>
+        <!-- Logo + Text (Desktop) -->
+        <div class="hidden md:flex items-center gap-2">
+          <%= image_tag "yang.png", class: "h-8 w-8 object-contain" %>
           <%= link_to "SINSHE TOMMY", root_path %>
         </div>
-
       </div>
+
+      <!-- KANAN -->
+      <div class="flex items-center gap-2">
+        <!-- Logo (Mobile Only) -->
+        <div class="md:hidden flex items-center gap-2">
+          <%= link_to root_path do %>
+            <%= image_tag "yang.png", class: "h-8 w-8 object-contain" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
 
       <!-- Desktop Login -->
       <div class="hidden md:block">
         <%= link_to "Masuk", admin_user_session_path,
           class:"bg-blue-600 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold" %>
       </div>
-
     </div>
 
     <!-- DESKTOP MENU -->
@@ -49,7 +60,7 @@
         <%= link_to "Beranda", root_path, class:"hover:text-blue-600" %>
         <%= link_to "Data Pasien", patients_path, class:"hover:text-blue-600" %>
         <%= link_to "Keuangan", finance_path, class:"hover:text-blue-600" %>
-        <%= link_to "Kunjungan", tomorrow_visits_path, class:"hover:text-blue-600" %>
+        <%= link_to "Kunjungan", visits_path, class:"hover:text-blue-600" %>
       </div>
 
       <%= link_to "Kontak Bantuan", "#",
@@ -57,42 +68,65 @@
 
     </div>
 
-  <!-- SIDEBAR MENU -->
-  <div id="mobileMenu"
-      class="fixed top-0 left-0 h-full w-64 bg-white shadow-2xl border-r border-gray-200 transform -translate-x-full transition-transform duration-300 z-50">
+    <!-- SIDEBAR -->
+    <div id="mobileMenu"
+      class="fixed top-0 left-0 h-full w-72 bg-white/95 backdrop-blur-xl shadow-2xl
+            transform -translate-x-full transition-all duration-300 ease-out z-50 flex flex-col">
 
-    <!-- HEADER MENU -->
-    <div class="flex items-center justify-between p-5 border-b">
-      <span class="font-semibold text-lg">Menu</span>
+      <!-- HEADER -->
+      <div class="flex items-center justify-between px-5 py-4 border-b">
 
-      <!-- TOMBOL CLOSE -->
-      <button id="closeMenu"
-              class="text-gray-500 hover:text-red-500 text-2xl font-bold">
-        &times;
-      </button>
+        <div class="flex items-center gap-3">
+          <%= image_tag "yang.png", class: "h-8 w-8" %>
+          <span class="font-semibold text-gray-800">Sinshe Tommy</span>
+        </div>
+
+        <button id="closeMenu"
+          class="text-gray-400 hover:text-red-500 text-xl transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- MENU -->
+      <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
+
+        <%= link_to root_path,
+          class: "flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-all duration-200" do %>
+          <i class="fa-solid fa-house text-gray-400"></i>
+          Beranda
+        <% end %>
+
+        <%= link_to patients_path,
+          class: "flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-all duration-200" do %>
+          <i class="fa-solid fa-users text-gray-400"></i>
+          Data Pasien
+        <% end %>
+
+        <%= link_to visits_path,
+          class: "flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-all duration-200" do %>
+          <i class="fa-solid fa-calendar text-gray-400"></i>
+          Kunjungan
+        <% end %>
+
+        <%= link_to finance_path,
+          class: "flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-all duration-200" do %>
+          <i class="fa-solid fa-money-bill text-gray-400"></i>
+          Keuangan
+        <% end %>
+
+      </nav>
+
+      <!-- FOOTER -->
+      <div class="p-4">
+
+        <%= link_to admin_user_session_path,
+          class:"block text-center bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-sm font-semibold transition" do %>
+          Masuk
+        <% end %>
+
+      </div>
+
     </div>
-
-    <!-- MENU ITEMS -->
-    <%= link_to "Beranda", root_path,
-        class:"block px-6 py-4 border-b hover:bg-gray-100" %>
-
-    <%= link_to "Data Pasien", patients_path,
-        class:"block px-6 py-4 border-b hover:bg-gray-100" %>
-
-    <%= link_to "Keuangan", finance_path,
-        class:"block px-6 py-4 border-b hover:bg-gray-100" %>
-
-    <%= link_to "Kunjungan", tomorrow_visits_path,
-        class:"block px-6 py-4 border-b hover:bg-gray-100" %>
-
-    <%= link_to "Kontak Bantuan", "#",
-        class:"block px-6 py-4 border-b hover:bg-gray-100" %>
-
-    <%= link_to "Masuk", admin_user_session_path,
-        class:"block px-6 py-4 text-blue-600 font-semibold" %>
-
-  </div>
-
   </header>
 
   <!-- CONTENT -->
@@ -105,19 +139,22 @@
       const menuBtn = document.getElementById("menuBtn");
       const mobileMenu = document.getElementById("mobileMenu");
       const closeMenu = document.getElementById("closeMenu");
+      const overlay = document.getElementById("overlay");
 
-      if (menuBtn) {
-        menuBtn.addEventListener("click", () => {
-          mobileMenu.classList.remove("-translate-x-full");
-        });
+      function openMenu() {
+        mobileMenu.classList.remove("-translate-x-full");
+        overlay.classList.remove("opacity-0", "pointer-events-none");
       }
 
-      if (closeMenu) {
-        closeMenu.addEventListener("click", () => {
-          mobileMenu.classList.add("-translate-x-full");
-        });
+      function closeMenuFunc() {
+        mobileMenu.classList.add("-translate-x-full");
+        overlay.classList.add("opacity-0", "pointer-events-none");
       }
+
+      if (menuBtn) menuBtn.onclick = openMenu;
+      if (closeMenu) closeMenu.onclick = closeMenuFunc;
+      if (overlay) overlay.onclick = closeMenuFunc;
     });
-</script>
+    </script>
 </body>
 </html>

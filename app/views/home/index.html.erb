@@ -1,59 +1,50 @@
 <div class="bg-gray-50">
   <!-- Hero -->
-  <section class="bg-gray-100 py-10">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="bg-blue-600 text-white rounded-2xl px-8 py-12 relative overflow-hidden">
+  <section class="py-10">
+  <div class="max-w-6xl mx-auto px-6 text-center">
 
-        <!-- Statistik (KIRI ATAS) -->
-        <div class="absolute top-6 left-8 flex flex-wrap gap-8 text-sm">
-
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-star text-yellow-300 text-lg"></i>
-            <div>
-              <div class="font-bold text-base"><%= @rating %></div>
-              <div class="opacity-80 text-xs">Penilaian</div>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-comments text-lg"></i>
-            <div>
-              <div class="font-bold text-base"><%= @reviews_count %></div>
-              <div class="opacity-80 text-xs">Ulasan</div>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-heart text-pink-300 text-lg"></i>
-            <div>
-              <div class="font-bold text-base"><%= @patients_recovered %></div>
-              <div class="opacity-80 text-xs">Pasien Sembuh</div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Konten Tengah -->
-        <div class="text-center mt-16">
-
-          <h1 class="text-4xl font-bold mb-4 tracking-wide">
-            SINSHE TOMMY
-          </h1>
-
-          <p class="text-lg opacity-90 mb-6">
-            Spesialis Pengobatan Tiongkok
-          </p>
-
-          <a href="/patients/new"
-             class="inline-block bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition shadow-md">
-            Daftar Kunjungan
-          </a>
-
-        </div>
-
-      </div>
+    <!-- LOGO -->
+    <div class="flex justify-center mb-6">
+      <%= image_tag "logo.png",
+          class: "w-32 sm:w-40 md:w-48 object-contain drop-shadow-lg" %>
     </div>
-  </section>
+
+    <!-- TITLE -->
+    <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-2 tracking-wide">
+      SINSHE TOMMY
+    </h1>
+
+    <p class="text-sm sm:text-base text-gray-500 mb-6">
+      Spesialis Pengobatan Tiongkok
+    </p>
+
+    <!-- STATS -->
+    <div class="flex flex-wrap justify-center gap-6 mb-6 text-sm">
+
+      <div class="flex items-center gap-2">
+        ⭐ <span class="font-semibold"><%= @rating %></span>
+        <span class="text-gray-400 text-xs">Penilaian</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        💬 <span class="font-semibold"><%= @reviews_count %></span>
+        <span class="text-gray-400 text-xs">Ulasan</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        ❤️ <span class="font-semibold"><%= @patients_recovered %></span>
+        <span class="text-gray-400 text-xs">Sembuh</span>
+      </div>
+
+    </div>
+
+    <!-- BUTTON -->
+    <%= link_to "Daftar Kunjungan",
+        new_patient_path,
+        class: "inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-sm font-semibold shadow-md transition active:scale-95" %>
+
+  </div>
+</section>
 
   <!-- Tentang Klinik -->
   <section class="py-16 text-center">
@@ -137,7 +128,8 @@
       <div>
         <h3 class="font-semibold text-lg">Kontak</h3>
         <p class="text-gray-600">
-          0896-9736-9661
+          085846803938 <br>
+          (Admin)
         </p>
       </div>
 

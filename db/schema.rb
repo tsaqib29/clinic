@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_11_053817) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_26_075441) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -24,6 +24,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_11_053817) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "appointments", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "deleted_at"
+    t.string "note"
+    t.bigint "patient_id", null: false
+    t.date "scheduled_date"
+    t.datetime "updated_at", null: false
+    t.index ["patient_id"], name: "index_appointments_on_patient_id"
   end
 
   create_table "diseases", force: :cascade do |t|
@@ -45,6 +55,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_11_053817) do
     t.text "address"
     t.integer "age"
     t.datetime "created_at", null: false
+    t.datetime "deleted_at"
     t.text "keluhan"
     t.string "name"
     t.string "phone"
@@ -63,12 +74,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_11_053817) do
   create_table "visits", force: :cascade do |t|
     t.integer "cost"
     t.datetime "created_at", null: false
+    t.datetime "deleted_at"
     t.date "next_visit_date"
     t.bigint "patient_id"
     t.datetime "updated_at", null: false
     t.date "visit_date"
+    t.time "visit_time"
     t.index ["patient_id"], name: "index_visits_on_patient_id"
   end
 
+  add_foreign_key "appointments", "patients"
   add_foreign_key "visits", "patients"
 end

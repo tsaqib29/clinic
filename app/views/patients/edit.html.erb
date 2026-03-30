@@ -1,33 +1,41 @@
 <% content_for :title, "Edit Kunjungan" %>
 
-<div class="max-w-3xl mx-auto px-4 sm:px-0 py-6">
+<section class="py-8 sm:py-10 px-3 sm:px-6 lg:px-8 bg-gray-50 min-h-screen">
+  <div class="max-w-2xl mx-auto">
 
-  <!-- Header -->
-  <div class="mb-6">
-    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">
-      Edit Kunjungan
-    </h1>
-    <p class="text-sm text-gray-500 mt-1">
-      Perbarui data kunjungan pasien dengan benar.
-    </p>
+    <!-- HEADER -->
+    <div class="mb-6">
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-800">
+        ✏️ Edit Kunjungan
+      </h1>
+      <p class="text-xs sm:text-sm text-gray-500 mt-1">
+        Perbarui data kunjungan pasien
+      </p>
+    </div>
+
+    <!-- FORM -->
+    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 sm:p-7 mb-5">
+
+      <%= render "form", patient: @patient %>
+
+    </div>
+
+    <!-- ACTION -->
+    <div class="flex flex-col sm:flex-row gap-2">
+
+      <!-- DETAIL -->
+      <%= link_to @patient,
+          class: "flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 rounded-xl text-sm font-medium transition" do %>
+        👁 <span>Detail</span>
+      <% end %>
+
+      <!-- BACK -->
+      <%= link_to patients_path,
+          class: "flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 rounded-xl text-sm font-medium transition" do %>
+        ← <span>Kembali</span>
+      <% end %>
+
+    </div>
+
   </div>
-
-  <!-- Card Form -->
-  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-6">
-    <%= render "form", patient: @patient %>
-  </div>
-
-  <!-- Navigation Buttons -->
-  <div class="flex flex-col sm:flex-row gap-3">
-
-    <%= link_to "👁 Lihat Detail",
-        @patient,
-        class: "w-full sm:w-auto text-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-xl text-sm font-medium transition" %>
-
-    <%= link_to "← Kembali",
-        patients_path,
-        class: "w-full sm:w-auto text-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-xl text-sm font-medium transition" %>
-
-  </div>
-
-</div>
+</section>

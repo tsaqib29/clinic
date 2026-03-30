@@ -1,15 +1,21 @@
 class VisitsController < ApplicationController
-  before_action :set_patient, except: [:tomorrow]
   before_action :set_visit, only: [:show, :edit, :update, :destroy]
+  before_action :set_patient, only: [:new, :create]
 
   def index
-    @visits = Visit.includes(:patient).order(visit_date: :desc)
+    @date = params[:date] ? Date.parse(params[:date]) : Date.today
 
-    @today_visits = Visit.includes(:patient)
-                       .where(visit_date: Date.today)
+    @visits = Visit.active
+                 .includes(:patient)
+                 .where(next_visit_date: @date)
 
-    @tomorrow_visits = Visit.includes(:patient)
-                            .where(next_visit_date: Date.tomorrow)
+    @appointments = Appointment
+                    .includes(:patient)
+                    .where(scheduled_date: @date, deleted_at: nil)
+
+    if params[:date].present?
+      render partial: "modal"
+    end
   end
 
   def show
@@ -45,30 +51,22 @@ class VisitsController < ApplicationController
   end
 
   def destroy
-    @visit.destroy
-    redirect_to patient_path(@patient), notice: "Kunjungan dihapus"
-  end
+    @visit = Visit.find(params[:id])
+    @visit.update(deleted_at: Time.current)
 
-  def tomorrow
-    next_day = Date.current.next_weekday
-
-    @visits = Visit.includes(:patient).order(visit_date: :desc)
-
-    @today_visits = Visit.includes(:patient)
-                       .where(visit_date: Date.today)
-
-    @tomorrow_visits = Visit.includes(:patient)
-                            .where(next_visit_date: next_day)
+    redirect_to visits_path(date: @visit.next_visit_date),
+                notice: "Kunjungan dihapus",
+                status: :see_other
   end
 
   private
 
   def set_patient
-    @patient = Patient.find(params[:patient_id])
+    @patient = Patient.find_by(id: params[:patient_id]) if params[:patient_id]
   end
 
   def set_visit
-    @visit = @patient.visits.find(params[:id])
+    @visit = Visit.find(params[:id])
   end
 
   def visit_params

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   get "finance/index"
+  get "calendar", to: "calendar#index"
+
   namespace :admin do
     get "dashboard/index"
   end
@@ -18,7 +20,9 @@ Rails.application.routes.draw do
     root "dashboard#index"
   end
 
-  get "tomorrow_visits", to: "visits#tomorrow"
+  resources :visits
+
+  resources :appointments
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

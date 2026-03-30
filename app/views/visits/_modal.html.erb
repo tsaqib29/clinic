@@ -1,0 +1,86 @@
+<turbo-frame id="modal">
+
+<div class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center z-50">
+
+  <div class="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-xl p-5 shadow-xl animate-[fadeIn_.2s]">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center mb-3">
+      <h2 class="text-base sm:text-lg font-semibold">
+        📅 <%= @date.strftime("%d %B %Y") %>
+      </h2>
+
+      <button onclick="document.getElementById('modal').innerHTML = ''"
+        class="text-gray-400 hover:text-red-500 text-lg">
+        ✕
+      </button>
+    </div>
+
+    <!-- LIST -->
+    <div class="space-y-2 max-h-60 overflow-y-auto pr-1">
+
+      <% if @visits.any? || @appointments.any? %>
+
+        <% @visits.each do |visit| %>
+          <div class="p-3 border rounded-xl flex justify-between items-center hover:bg-gray-50">
+
+            <div>
+              <div class="font-medium text-sm">
+                🩺 <%= visit.patient.name %>
+              </div>
+              <div class="text-xs text-gray-400">
+                <%= visit.patient.address %>
+              </div>
+            </div>
+
+            <div class="text-xs text-blue-600">Kontrol</div>
+
+            <%= link_to "✕",
+                visit_path(visit),
+                data: { turbo_method: :delete, turbo_confirm: "Hapus?" },
+                class:"text-red-500 text-xs" %>
+          </div>
+        <% end %>
+
+        <% @appointments.each do |app| %>
+          <div class="p-3 border rounded-xl flex justify-between items-center hover:bg-gray-50">
+
+            <div>
+              <div class="font-medium text-sm">
+                📅 <%= app.patient.name %>
+              </div>
+              <div class="text-xs text-gray-400">
+                <%= app.patient.address %>
+              </div>
+            </div>
+
+            <div class="text-xs text-green-600">Janji</div>
+
+            <%= link_to "✕",
+                appointment_path(app),
+                data: { turbo_method: :delete, turbo_confirm: "Hapus?" },
+                class:"text-red-500 text-xs" %>
+          </div>
+        <% end %>
+
+      <% else %>
+
+        <div class="text-center text-gray-400 text-sm py-6">
+          Belum ada pasien
+        </div>
+
+      <% end %>
+
+    </div>
+
+    <!-- BUTTON -->
+    <%= link_to "➕ Tambah Janji",
+      new_appointment_path(date: @date),
+      data: { turbo_frame: "_top" },
+      class:"block w-full text-center bg-green-500 hover:bg-green-600 text-white py-2 rounded-xl mt-3 text-sm" %>
+
+  </div>
+
+</div>
+
+</turbo-frame>

@@ -1,96 +1,147 @@
-<section class="py-10 px-6 bg-gray-50 min-h-screen">
+<section class="py-8 sm:py-10 px-3 sm:px-6 bg-gray-50 min-h-screen">
 
-<div class="max-w-6xl mx-auto">
+  <div class="max-w-6xl mx-auto">
 
-<h1 class="text-3xl font-bold text-gray-800 mb-8">
-💰 Keuangan Klinik
-</h1>
+    <!-- HEADER -->
+    <div class="mb-6">
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">
+        💰 Keuangan Klinik
+      </h1>
+      <p class="text-xs sm:text-sm text-gray-500 mt-1">
+        Ringkasan pemasukan dari kunjungan pasien
+      </p>
+    </div>
 
-<!-- CARD INCOME -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+    <!-- CARDS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
 
-<div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition">
-<p class="text-gray-500 text-sm mb-1">Income Hari Ini</p>
-<p class="text-2xl font-bold text-green-600">
-<%= number_to_currency(@today_income, unit:"Rp ", delimiter:".", precision:0) %>
-</p>
-</div>
+      <!-- TODAY -->
+      <div class="bg-white p-5 rounded-2xl shadow-sm border hover:shadow-md transition">
+        <div class="flex justify-between items-center mb-2">
+          <p class="text-gray-500 text-xs">Hari Ini</p>
+          <span class="text-green-500 text-lg">📈</span>
+        </div>
+        <p class="text-xl sm:text-2xl font-bold text-green-600">
+          <%= number_to_currency(@today_income, unit:"Rp ", delimiter:".", precision:0) %>
+        </p>
+      </div>
 
-<div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition">
-<p class="text-gray-500 text-sm mb-1">Income Bulan Ini</p>
-<p class="text-2xl font-bold text-blue-600">
-<%= number_to_currency(@month_income, unit:"Rp ", delimiter:".", precision:0) %>
-</p>
-</div>
+      <!-- MONTH -->
+      <div class="bg-white p-5 rounded-2xl shadow-sm border hover:shadow-md transition">
+        <div class="flex justify-between items-center mb-2">
+          <p class="text-gray-500 text-xs">Bulan Ini</p>
+          <span class="text-blue-500 text-lg">📊</span>
+        </div>
+        <p class="text-xl sm:text-2xl font-bold text-blue-600">
+          <%= number_to_currency(@month_income, unit:"Rp ", delimiter:".", precision:0) %>
+        </p>
+      </div>
 
-<div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition">
-<p class="text-gray-500 text-sm mb-1">Total Income</p>
-<p class="text-2xl font-bold text-purple-600">
-<%= number_to_currency(@total_income, unit:"Rp ", delimiter:".", precision:0) %>
-</p>
-</div>
+      <!-- TOTAL -->
+      <div class="bg-white p-5 rounded-2xl shadow-sm border hover:shadow-md transition">
+        <div class="flex justify-between items-center mb-2">
+          <p class="text-gray-500 text-xs">Total</p>
+          <span class="text-purple-500 text-lg">💎</span>
+        </div>
+        <p class="text-xl sm:text-2xl font-bold text-purple-600">
+          <%= number_to_currency(@total_income, unit:"Rp ", delimiter:".", precision:0) %>
+        </p>
+      </div>
 
-</div>
+    </div>
 
-<!-- TABLE -->
-<div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
+    <!-- TABLE -->
+    <div class="bg-white rounded-2xl shadow-sm border">
 
-<div class="px-6 py-4 border-b">
-<h2 class="font-semibold text-gray-700">
-Riwayat Income Pasien
-</h2>
-</div>
+      <!-- HEADER -->
+      <div class="px-5 py-4 border-b flex justify-between items-center">
+        <h2 class="text-sm sm:text-base font-semibold text-gray-700">
+          Riwayat Income
+        </h2>
+      </div>
 
-<table class="w-full text-sm">
+      <!-- DESKTOP TABLE -->
+      <div class="hidden sm:block overflow-x-auto">
+        <table class="w-full text-sm">
 
-<thead class="bg-gray-50 text-gray-600">
-<tr>
-<th class="p-4 text-left">Tanggal</th>
-<th class="p-4 text-left">Pasien</th>
-<th class="p-4 text-left">Biaya</th>
-</tr>
-</thead>
+          <thead class="bg-gray-50 text-gray-600">
+            <tr>
+              <th class="p-3 text-left">Tanggal</th>
+              <th class="p-3 text-left">Pasien</th>
+              <th class="p-3 text-left">Biaya</th>
+            </tr>
+          </thead>
 
-<tbody>
+          <tbody>
+            <% if @visits.present? %>
+              <% @visits.each do |visit| %>
 
-<% if @visits.present? %>
+                <tr class="border-t hover:bg-gray-50 transition">
 
-<% @visits.each do |visit| %>
+                  <td class="p-3 text-gray-700">
+                    <%= visit.visit_date&.strftime("%d %b %Y") %>
+                  </td>
 
-<tr class="border-t hover:bg-gray-50 transition">
+                  <td class="p-3 font-medium text-gray-800">
+                    <%= visit.patient.name %>
+                  </td>
 
-<td class="p-4 text-center text-gray-700">
-<%= visit.visit_date&.strftime("%d %b %Y") %>
-</td>
+                  <td class="p-3 font-semibold text-green-600">
+                    <%= number_to_currency(visit.cost, unit:"Rp ", delimiter:".", precision:0) %>
+                  </td>
 
-<td class="p-4 text-center font-medium text-gray-800">
-<%= visit.patient.name %>
-</td>
+                </tr>
 
-<td class="p-4 text-center font-semibold text-green-600">
-<%= number_to_currency(visit.cost, unit:"Rp ", delimiter:".", precision:0) %>
-</td>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="3" class="p-6 text-center text-gray-400">
+                  Belum ada data income
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
 
-</tr>
+        </table>
+      </div>
 
-<% end %>
+      <!-- MOBILE VERSION -->
+      <div class="sm:hidden divide-y">
 
-<% else %>
+        <% if @visits.present? %>
 
-<tr>
-<td colspan="3" class="p-6 text-center text-gray-400">
-Belum ada data income.
-</td>
-</tr>
+          <% @visits.each do |visit| %>
 
-<% end %>
+            <div class="p-4">
 
-</tbody>
+              <div class="text-xs text-gray-500 mb-1">
+                <%= visit.visit_date&.strftime("%d %b %Y") %>
+              </div>
 
-</table>
+              <div class="font-medium text-gray-800">
+                <%= visit.patient.name %>
+              </div>
 
-</div>
+              <div class="text-green-600 font-semibold mt-1">
+                <%= number_to_currency(visit.cost, unit:"Rp ", delimiter:".", precision:0) %>
+              </div>
 
-</div>
+            </div>
+
+          <% end %>
+
+        <% else %>
+
+          <div class="p-6 text-center text-gray-400">
+            Belum ada data income
+          </div>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
 
 </section>

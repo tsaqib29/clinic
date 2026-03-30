@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+/* SEMUA SCROLLBAR HILANG */
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: none;
+}
+
+/* IE lama (optional) */
+* {
+  -ms-overflow-style: none;
+}

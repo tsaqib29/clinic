@@ -1,54 +1,71 @@
-<h2 class="text-xl font-bold mb-3">Kontrol Besok</h2>
+<turbo-frame id="calendar">
+  <div class="p-3 sm:p-6 bg-gray-50 min-h-screen">
 
-<% if @tomorrow_visits.any? %>
+    <div class="bg-white rounded-2xl shadow border p-4 sm:p-6">
 
-<table class="w-full text-sm mb-8">
-  <thead class="border-b">
-    <tr>
-      <th class="text-left py-2">Nama</th>
-      <th class="text-left py-2">HP</th>
-      <th class="text-left py-2">Tanggal</th>
-    </tr>
-  </thead>
+      <!-- HEADER -->
+      <div class="flex items-center justify-between mb-4">
 
-  <tbody>
-    <% @tomorrow_visits.each do |visit| %>
-      <tr class="border-b">
-        <td class="py-2"><%= visit.patient.name %></td>
-        <td class="py-2"><%= visit.patient.phone %></td>
-        <td class="py-2"><%= visit.next_visit_date %></td>
-      </tr>
-    <% end %>
-  </tbody>
+        <%= link_to "<",
+            visits_path(date: @date.prev_month),
+            data: { turbo_frame: "calendar" },
+            class:"px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm" %>
 
-</table>
+        <h2 class="text-base sm:text-lg font-semibold text-gray-800 text-center">
+          📅 <%= @date.strftime("%B %Y") %>
+        </h2>
 
-<% else %>
+        <%= link_to ">",
+            visits_path(date: @date.next_month),
+            data: { turbo_frame: "calendar" },
+            class:"px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm" %>
+      </div>
 
-<p class="text-gray-500 mb-8">
-Tidak ada pasien kontrol besok
-</p>
+      <!-- HARI -->
+      <div class="grid grid-cols-7 text-[10px] sm:text-xs font-semibold text-gray-500 mb-1">
+        <% %w[Sen Sel Rab Kam Jum Sab Min].each do |d| %>
+          <div class="text-center"><%= d %></div>
+        <% end %>
+      </div>
 
-<% end %>
+      <!-- TANGGAL -->
+      <div class="grid grid-cols-7 gap-1 sm:gap-2">
 
-<h2 class="text-xl font-bold mb-3">Semua Kunjungan</h2>
+        <% start_date = @date.beginning_of_month.beginning_of_week(:monday) %>
+        <% end_date   = @date.end_of_month.end_of_week(:monday) %>
 
-<table class="w-full text-sm">
-<thead class="border-b">
-<tr>
-<th>Nama</th>
-<th>Tanggal Datang</th>
-<th>Kontrol Lagi</th>
-</tr>
-</thead>
+        <% (start_date..end_date).each do |day| %>
 
-<tbody>
-<% @visits.each do |visit| %>
-<tr class="border-b">
-<td><%= visit.patient.name %></td>
-<td><%= visit.visit_date %></td>
-<td><%= visit.next_visit_date %></td>
-</tr>
-<% end %>
-</tbody>
-</table>
+          <% total = Visit.active.where(next_visit_date: day).count +
+                     Appointment.where(scheduled_date: day, deleted_at: nil).count %>
+
+          <div class="relative rounded-xl p-2 sm:p-3 h-20 sm:h-24
+                      border bg-white hover:bg-blue-50 transition
+                      <%= 'opacity-40' if day.month != @date.month %>
+                      <%= 'ring-2 ring-blue-400' if day == Date.today %>">
+
+            <!-- tanggal -->
+            <div class="text-xs sm:text-sm font-bold text-gray-700">
+              <%= day.day %>
+            </div>
+
+            <!-- badge jumlah -->
+            <% if total > 0 %>
+              <div class="mt-1 inline-block text-[10px] sm:text-xs px-2 py-0.5
+                          bg-blue-100 text-blue-700 rounded-full">
+                <%= total %>
+              </div>
+            <% end %>
+
+            <!-- klik -->
+            <%= link_to "", visits_path(date: day), data: { turbo_frame: "modal" }, class:"absolute inset-0 z-10" %>
+
+          </div>
+
+        <% end %>
+      </div>
+
+    </div>
+
+  </div>
+</turbo-frame>

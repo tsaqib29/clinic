@@ -1,6 +1,8 @@
 class PatientsController < ApplicationController
+  before_action :set_patient, only: [:show, :edit, :update, :destroy]
+
   def index
-    @patients = Patient.all.order(created_at: :desc)
+    @patients = Patient.active.order(created_at: :desc)
   end
 
   def show
@@ -34,6 +36,15 @@ class PatientsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @patient.update(deleted_at: Time.current)
+    redirect_to patients_path, notice: "Pasien berhasil dihapus"
+  end
+
+  def set_patient
+    @patient = Patient.find(params[:id])
   end
 
   private
