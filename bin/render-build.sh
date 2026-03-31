@@ -2,4 +2,4 @@
 set -o errexit
 
 bundle install
-rails db:migrate
+bundle exec rails db:migrate
