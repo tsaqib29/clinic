@@ -155,6 +155,37 @@
       if (closeMenu) closeMenu.onclick = closeMenuFunc;
       if (overlay) overlay.onclick = closeMenuFunc;
     });
-    </script>
+
+    function openModal() {
+      const wrapper = document.getElementById("modalWrapper");
+      const content = document.getElementById("modalContent");
+
+      if (!wrapper || !content) return;
+
+      wrapper.classList.remove("opacity-0", "pointer-events-none");
+      content.classList.remove("translate-y-full", "sm:scale-95");
+    }
+
+    function closeModal() {
+      const wrapper = document.getElementById("modalWrapper");
+      const content = document.getElementById("modalContent");
+
+      if (!wrapper || !content) return;
+
+      wrapper.classList.add("opacity-0");
+      content.classList.add("translate-y-full", "sm:scale-95");
+
+      setTimeout(() => {
+        wrapper.classList.add("pointer-events-none");
+        document.getElementById("modal").innerHTML = "";
+      }, 300);
+    }
+
+    document.addEventListener("turbo:frame-load", function(e) {
+      if (e.target.id === "modal") {
+        setTimeout(openModal, 10);
+      }
+    });
+  </script>
 </body>
 </html>
