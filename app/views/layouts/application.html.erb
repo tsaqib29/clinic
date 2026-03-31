@@ -6,38 +6,14 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <turbo-frame id="modal"></turbo-frame>
     <%= javascript_importmap_tags %>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/manifest.json" data-turbo-track="reload">
     <meta name="theme-color" content="#2563eb">
-    <link rel="apple-touch-icon" href="/icon-192.png">
   </head>
 
   <body class="bg-slate-50">
-    <div id="installPopup"
-    class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 bg-white shadow-xl border rounded-2xl px-5 py-4 w-[90%] max-w-sm z-50">
-
-    <div class="flex items-center justify-between mb-2">
-      <div class="font-semibold text-gray-800">
-        Install Aplikasi
-      </div>
-
-      <button onclick="closeInstall()" class="text-gray-400 hover:text-red-500">
-        ✕
-      </button>
-    </div>
-
-    <p class="text-sm text-gray-500 mb-3">
-      Tambahkan ke layar utama agar lebih cepat & seperti aplikasi.
-    </p>
-
-    <button onclick="installApp()"
-      class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-xl text-sm">
-      📲 Install Sekarang
-    </button>
-
-  </div>
+    <turbo-frame id="modal"></turbo-frame>
 
   <!-- HEADER -->
   <header class="bg-white shadow-sm sticky top-0 z-50">
@@ -236,39 +212,27 @@
       }
     });
 
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then(() => console.log("SW registered"));
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js")
+        .then(() => console.log("Service Worker Registered"));
     }
 
     let deferredPrompt;
 
-    window.addEventListener('beforeinstallprompt', (e) => {
+    window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
 
-      // AUTO munculin popup
+      // contoh auto trigger
       setTimeout(() => {
-        const popup = document.getElementById("installPopup");
-        if (popup) popup.classList.remove("hidden");
-      }, 2000); // delay 2 detik biar smooth
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then(() => {
+            deferredPrompt = null;
+          });
+        }
+      }, 3000);
     });
-
-    function installApp() {
-      if (!deferredPrompt) return;
-
-      deferredPrompt.prompt();
-
-      deferredPrompt.userChoice.then(() => {
-        deferredPrompt = null;
-        closeInstall();
-      });
-    }
-
-    function closeInstall() {
-      const popup = document.getElementById("installPopup");
-      if (popup) popup.classList.add("hidden");
-    }
   </script>
 </body>
 </html>
