@@ -130,7 +130,7 @@
   </header>
 
   <!-- CONTENT -->
-  <main>
+  <main id="pageContent" class="transition-all duration-300">
     <%= yield %>
   </main>
 
@@ -184,6 +184,29 @@
     document.addEventListener("turbo:frame-load", function(e) {
       if (e.target.id === "modal") {
         setTimeout(openModal, 10);
+      }
+    });
+
+    document.addEventListener("turbo:visit", () => {
+      const page = document.getElementById("pageContent");
+      if (page) {
+        page.classList.add("page-leave");
+      }
+    });
+
+    document.addEventListener("turbo:load", () => {
+      const page = document.getElementById("pageContent");
+
+      if (page) {
+        page.classList.add("page-enter");
+
+        setTimeout(() => {
+          page.classList.add("page-enter-active");
+        }, 10);
+
+        setTimeout(() => {
+          page.classList.remove("page-enter", "page-enter-active");
+        }, 300);
       }
     });
   </script>
