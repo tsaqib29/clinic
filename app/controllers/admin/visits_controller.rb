@@ -1,4 +1,4 @@
-class VisitsController < ApplicationController
+class Admin::VisitsController < ApplicationController
   before_action :set_visit, only: [:show, :edit, :update, :destroy]
   before_action :set_patient, only: [:new, :create]
 
@@ -12,6 +12,9 @@ class VisitsController < ApplicationController
     @appointments = Appointment
                     .includes(:patient)
                     .where(scheduled_date: @date, deleted_at: nil)
+
+    @visit_counts = Visit.active.group(:next_visit_date).count
+    @appointment_counts = Appointment.where(deleted_at: nil).group(:scheduled_date).count
 
     if params[:date].present?
       render partial: "modal"
@@ -33,7 +36,7 @@ class VisitsController < ApplicationController
     )
 
     if @visit.save
-      redirect_to patient_path(@patient), notice: "Kunjungan berhasil ditambahkan"
+      redirect_to admin_patient_path(@patient), notice: "Kunjungan berhasil ditambahkan"
     else
       render :new
     end
@@ -43,18 +46,19 @@ class VisitsController < ApplicationController
   end
 
   def update
+    cleaned_cost = visit_params[:cost].to_s.gsub(".", "")
+
     if @visit.update(visit_params)
-      redirect_to patient_path(@patient), notice: "Kunjungan berhasil diupdate"
+      redirect_to admin_patient_path(@visit.patient), notice: "Kunjungan berhasil diupdate"
     else
       render :edit
     end
   end
 
   def destroy
-    @visit = Visit.find(params[:id])
     @visit.update(deleted_at: Time.current)
 
-    redirect_to visits_path(date: @visit.next_visit_date),
+    redirect_to admin_visits_path(date: @visit.next_visit_date),
                 notice: "Kunjungan dihapus",
                 status: :see_other
   end
@@ -62,11 +66,11 @@ class VisitsController < ApplicationController
   private
 
   def set_patient
-    @patient = Patient.find_by(id: params[:patient_id]) if params[:patient_id]
+    @patient = Patient.active.find(params[:patient_id]) if params[:patient_id]
   end
 
   def set_visit
-    @visit = Visit.find(params[:id])
+    @visit = Visit.active.find(params[:id])
   end
 
   def visit_params

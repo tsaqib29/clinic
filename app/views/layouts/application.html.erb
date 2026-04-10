@@ -15,6 +15,18 @@
   <body class="bg-slate-50">
     <turbo-frame id="modal"></turbo-frame>
 
+    <% if notice %>
+      <div class="toast fixed top-5 right-5 z-50 bg-green-500 text-white px-4 py-3 rounded-xl shadow-lg text-sm transition-all duration-300">
+        <%= notice %>
+      </div>
+    <% end %>
+
+    <% if alert %>
+      <div class="toast fixed top-5 right-5 z-50 bg-red-500 text-white px-4 py-3 rounded-xl shadow-lg text-sm transition-all duration-300">
+        <%= alert %>
+      </div>
+    <% end %>
+
   <!-- HEADER -->
   <header class="bg-white shadow-sm sticky top-0 z-50">
 
@@ -50,8 +62,16 @@
 
       <!-- Desktop Login -->
       <div class="hidden md:block">
-        <%= link_to "Masuk", admin_user_session_path,
-          class:"bg-blue-600 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold" %>
+        <% if admin_user_signed_in? %>
+          <%= button_to "Logout",
+                destroy_admin_user_session_path,
+                method: :delete,
+                class:"bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm" %>
+        <% else %>
+          <%= link_to "Masuk",
+                admin_user_session_path,
+                class:"bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm" %>
+        <% end %>
       </div>
     </div>
 
@@ -60,9 +80,11 @@
 
       <div class="flex items-center gap-6">
         <%= link_to "Beranda", root_path, class:"hover:text-blue-600" %>
-        <%= link_to "Data Pasien", patients_path, class:"hover:text-blue-600" %>
-        <%= link_to "Keuangan", finance_path, class:"hover:text-blue-600" %>
-        <%= link_to "Kunjungan", visits_path, class:"hover:text-blue-600" %>
+        <% if admin_user_signed_in? %>
+          <%= link_to "Data Pasien", admin_patients_path, class:"hover:text-blue-600" %>
+          <%= link_to "Keuangan", admin_finance_path, class:"hover:text-blue-600" %>
+          <%= link_to "Kunjungan", admin_visits_path, class:"hover:text-blue-600" %>
+        <% end %>
       </div>
 
       <%= link_to "Kontak Bantuan", "#",
@@ -98,32 +120,39 @@
           Beranda
         <% end %>
 
-        <%= link_to patients_path, onclick: "closeMenu()",
+      <% if admin_user_signed_in? %>
+        <%= link_to admin_patients_path, onclick: "closeMenu()",
           class: "flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-all duration-200" do %>
           <i class="fa-solid fa-users text-gray-400"></i>
           Data Pasien
         <% end %>
 
-        <%= link_to visits_path, onclick: "closeMenu()",
+        <%= link_to admin_visits_path, onclick: "closeMenu()",
           class: "flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-all duration-200" do %>
           <i class="fa-solid fa-calendar text-gray-400"></i>
           Kunjungan
         <% end %>
 
-        <%= link_to finance_path, onclick: "closeMenu()",
+        <%= link_to admin_finance_path, onclick: "closeMenu()",
           class: "flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-all duration-200" do %>
           <i class="fa-solid fa-money-bill text-gray-400"></i>
           Keuangan
         <% end %>
-
+      <% end %>
       </nav>
 
       <!-- FOOTER -->
       <div class="p-4">
 
-        <%= link_to admin_user_session_path,
-          class:"block text-center bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-sm font-semibold transition" do %>
-          Masuk
+        <% if admin_user_signed_in? %>
+          <%= button_to "Logout",
+                destroy_admin_user_session_path,
+                method: :delete,
+                class:"bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm" %>
+        <% else %>
+          <%= link_to "Masuk",
+                admin_user_session_path,
+                class:"bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm" %>
         <% end %>
 
       </div>
@@ -232,6 +261,21 @@
           });
         }
       }, 3000);
+    });
+
+    document.addEventListener("turbo:load", () => {
+      const toasts = document.querySelectorAll(".toast");
+
+      toasts.forEach((toast) => {
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transform = "translateY(-10px)";
+        }, 2500);
+
+        setTimeout(() => {
+          toast.remove();
+        }, 3000);
+      });
     });
   </script>
 </body>

@@ -22,7 +22,7 @@
         </div>
 
         <%= link_to "＋ Tambah",
-            new_patient_path,
+            new_admin_patient_path,
             class: "inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow active:scale-95 transition" %>
       </div>
 
@@ -31,7 +31,7 @@
     <!-- FILTER -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 mb-6">
 
-      <%= form_with url: patients_path, method: :get, local: true,
+      <%= form_with url: admin_patients_path, method: :get, local: true,
             class: "grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3" do |f| %>
 
         <!-- SEARCH -->
@@ -57,7 +57,7 @@
               class: "flex-1 bg-gray-800 hover:bg-black text-white py-2.5 rounded-xl text-sm font-semibold transition" %>
 
           <%= link_to "Reset",
-              patients_path,
+              admin_patients_path,
               class: "flex-1 text-center bg-gray-100 hover:bg-gray-200 py-2.5 rounded-xl text-sm font-medium transition" %>
         </div>
 
@@ -96,21 +96,21 @@
 
             <!-- ACTION -->
             <div class="flex gap-2 justify-end">
-              <%= link_to patient,
+              <%= link_to admin_patient_path(patient),
                   class: "p-2 rounded-lg hover:bg-gray-100 transition" do %>
                 👁
               <% end %>
 
               <!-- EDIT -->
-              <%= link_to edit_patient_path(patient),
+              <%= link_to edit_admin_patient_path(patient),
                   class: "p-2 rounded-lg hover:bg-yellow-100 transition" do %>
                 ✏️
               <% end %>
 
               <!-- DELETE -->
-              <%= button_to patient,
+              <%= button_to admin_patient_path(patient),
                   method: :delete,
-                  data: { turbo_confirm: "Yakin hapus?" },
+                  data: { turbo: false, turbo_confirm: "Yakin hapus?" },
                   class: "p-2 rounded-lg hover:bg-red-100 transition" do %>
                 🗑
               <% end %>
@@ -140,7 +140,7 @@
         </p>
 
         <%= link_to "＋ Tambah Pasien",
-            new_patient_path,
+            new_admin_patient_path,
             class: "inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow transition" %>
 
       </div>

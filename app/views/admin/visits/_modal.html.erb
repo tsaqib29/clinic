@@ -46,8 +46,8 @@
             <div class="text-xs text-blue-600">Kontrol</div>
 
             <%= link_to "✕",
-                visit_path(visit),
-                data: { turbo_method: :delete, turbo_confirm: "Hapus?" },
+                admin_visit_path(visit),
+                data: { turbo: false, turbo_method: :delete, turbo_confirm: "Hapus?" },
                 class:"text-red-500 text-xs" %>
           </div>
         <% end %>
@@ -68,7 +68,7 @@
 
             <%= link_to "✕",
                 appointment_path(app),
-                data: { turbo_method: :delete, turbo_confirm: "Hapus?" },
+                data: { turbo: false, turbo_method: :delete, turbo_confirm: "Hapus?" },
                 class:"text-red-500 text-xs" %>
           </div>
         <% end %>
@@ -85,7 +85,7 @@
 
     <!-- BUTTON -->
     <%= link_to "➕ Tambah Janji",
-      new_appointment_path(date: @date),
+      new_admin_appointment_path(date: @date),
       data: { turbo_frame: "_top" },
       class:"block w-full text-center bg-green-500 hover:bg-green-600 text-white py-2 rounded-xl mt-3 text-sm" %>
 

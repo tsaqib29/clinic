@@ -24,13 +24,13 @@
     <div class="flex flex-col sm:flex-row gap-2">
 
       <!-- DETAIL -->
-      <%= link_to @patient,
+      <%= link_to [:admin, @patient],
           class: "flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 rounded-xl text-sm font-medium transition" do %>
         👁 <span>Detail</span>
       <% end %>
 
       <!-- BACK -->
-      <%= link_to patients_path,
+      <%= link_to admin_patients_path,
           class: "flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 rounded-xl text-sm font-medium transition" do %>
         ← <span>Kembali</span>
       <% end %>

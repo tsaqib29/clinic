@@ -1,4 +1,4 @@
-class FinanceController < ApplicationController
+class Admin::FinanceController < ApplicationController
 
   def index
 

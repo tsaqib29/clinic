@@ -21,11 +21,11 @@
   <div class="flex flex-col sm:flex-row gap-3">
 
     <%= link_to "👁 Lihat Detail",
-        patient_visit_path(@visit.patient, @visit),
+        admin_patient_visit_path(@visit.patient, @visit),
         class: "w-full sm:w-auto text-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-xl text-sm font-medium transition" %>
 
     <%= link_to "← Kembali",
-        patient_visits_path,
+        admin_patient_visits_path,
         class: "w-full sm:w-auto text-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-xl text-sm font-medium transition" %>
 
   </div>

@@ -7,7 +7,7 @@
       <div class="flex items-center justify-between mb-4">
 
         <%= link_to "<",
-            visits_path(date: @date.prev_month),
+            admin_visits_path(date: @date.prev_month.beginning_of_month),
             data: { turbo_frame: "calendar" },
             class:"px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm" %>
 
@@ -16,7 +16,7 @@
         </h2>
 
         <%= link_to ">",
-            visits_path(date: @date.next_month),
+            admin_visits_path(date: @date.next_month.beginning_of_month),
             data: { turbo_frame: "calendar" },
             class:"px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm" %>
       </div>
@@ -36,8 +36,7 @@
 
         <% (start_date..end_date).each do |day| %>
 
-          <% total = Visit.active.where(next_visit_date: day).count +
-                     Appointment.where(scheduled_date: day, deleted_at: nil).count %>
+          <% total = (@visit_counts[day] || 0) + (@appointment_counts[day] || 0) %>
 
           <div class="relative rounded-xl p-2 sm:p-3 h-20 sm:h-24
                       border bg-white hover:bg-blue-50 transition
@@ -58,7 +57,7 @@
             <% end %>
 
             <!-- klik -->
-            <%= link_to "", visits_path(date: day), data: { turbo_frame: "modal" }, class:"absolute inset-0 z-10" %>
+            <%= link_to "", admin_visits_path(date: day), data: { turbo_frame: "modal" }, class:"absolute inset-0 z-10" %>
 
           </div>
 

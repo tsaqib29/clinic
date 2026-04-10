@@ -1,4 +1,4 @@
-class AppointmentsController < ApplicationController
+class Admin::AppointmentsController < ApplicationController
     def new
         @appointment = Appointment.new
         @date = params[:date]
@@ -8,7 +8,7 @@ class AppointmentsController < ApplicationController
         @appointment = Appointment.new(appointment_params)
 
         if @appointment.save
-            redirect_to visits_path, notice: "Janji berhasil ditambahkan"
+            redirect_to admin_visits_path, notice: "Janji berhasil ditambahkan"
         else
             render :new
         end
@@ -18,7 +18,7 @@ class AppointmentsController < ApplicationController
         @appointment = Appointment.find(params[:id])
         @appointment.update(deleted_at: Time.current)
 
-        redirect_to visits_path(date: @appointment.scheduled_date),
+        redirect_to admin_visits_path(date: @appointment.scheduled_date),
                     notice: "Janji dihapus",
                     status: :see_other
     end

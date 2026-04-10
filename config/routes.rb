@@ -2,25 +2,23 @@ Rails.application.routes.draw do
   get "finance/index"
   get "calendar", to: "calendar#index"
 
-  namespace :admin do
-    get "dashboard/index"
-  end
-
   root "home#index"
-
-  resources :patients do
-    resources :visits
-  end
 
   devise_for :admin_users
 
-  get "finance", to: "finance#index"
-
   namespace :admin do
     root "dashboard#index"
+
+    resources :patients do
+      resources :visits
+    end
+
+    resources :visits
+    get "finance", to: "finance#index"
+
+    resources :appointments
   end
 
-  resources :visits
 
   resources :appointments
 
